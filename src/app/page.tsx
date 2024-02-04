@@ -1,5 +1,5 @@
 import Image from "next/image";
-import RichEditor from "./_components/richEditor/RichEditor";
+import { RichTextEditor } from "./_components/RichTextEditor";
 
 export default function Home() {
   return (
@@ -8,6 +8,7 @@ export default function Home() {
         <header>
           <h1 className="text-3xl ">Rich Editor POC</h1>
           <hr />
+          <RichTextEditor />
         </header>
       </div>
     </main>

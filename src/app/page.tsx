@@ -8,6 +8,7 @@ export default function Home() {
         <header>
           <h1 className="text-3xl ">Rich Editor POC</h1>
           <hr />
+          <RichEditor />
         </header>
       </div>
     </main>

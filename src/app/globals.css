@@ -23,6 +23,7 @@
 .editor-class {
   background-color: lightgray;
   padding: 1rem;
+  min-height: 40vh;
   border: 1px solid #ccc;
 }
 .toolbar-class {

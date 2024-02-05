@@ -8,6 +8,7 @@ import { convertToHTML } from "draft-convert";
 import { EditorProps } from "react-draft-wysiwyg";
 import EditorContainer from "./EditorContainer";
 import draftToHtml from "draftjs-to-html";
+import AddTableButton from "./customComponents/AddTableButton";
 
 const Editor = dynamic<EditorProps>(
   () => import("react-draft-wysiwyg").then((mod) => mod.Editor),
@@ -40,11 +41,8 @@ const RichEditor = () => {
         editorClassName="editor-class"
         toolbarClassName="toolbar-class"
         toolbar={{
-          inline: { inDropdown: true },
           list: { inDropdown: true },
           textAlign: { inDropdown: true },
-          link: { inDropdown: true },
-          history: { inDropdown: true },
           image: {
             previewImage: true,
             uploadCallback: (file: Blob) => {
@@ -66,6 +64,7 @@ const RichEditor = () => {
             alt: { present: true, mandatory: true },
           },
         }}
+        toolbarCustomButtons={[<AddTableButton key={1} editorState={editorState} onChange={setEditorState} />]}
       />
       {/* <EditorContainer /> */}
       <div className="container p-10 mx-auto">

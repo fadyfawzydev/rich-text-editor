@@ -52,11 +52,11 @@ import "tinymce/skins/ui/oxide/skin.min.css";
 export default function BundledEditor(props: any) {
   const { init, onContentChange, ...rest } = props;
 
-  const handleEditorChange = (content: string) => {
-    if (onContentChange) {
-      onContentChange(content);
-    }
-  };
+  // const handleEditorChange = (content: string) => {
+  //   if (onContentChange) {
+  //     onContentChange(content);
+  //   }
+  // };
 
   // note that skin and content_css is disabled to avoid the normal
   // loading process and is instead loaded as a string via content_style
@@ -65,13 +65,38 @@ export default function BundledEditor(props: any) {
       init={{
         ...init,
         forced_root_block: "", // Ensure no additional root block is added
-
         plugins:
-          "ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss directionality preview autoresize accordion fullscreen",
+          "ai tinycomments mentions anchor autolink charmap code codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss directionality preview autoresize accordion fullscreen",
         toolbar:
-          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight ltr rtl | tinycomments | checklist numlist bullist accordion indent outdent | emoticons charmap | removeformat | preview fullscreen",
+          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight ltr rtl | tinycomments | checklist numlist bullist accordion indent outdent | emoticons charmap | removeformat | code preview fullscreen",
         autoresize_overflow_padding: 50,
         min_height: 600,
+        image_advtab: true, // Enable the advanced image tab
+
+        file_picker_types: "image", // Allow users to pick images
+
+        file_picker_callback: (callback, value, meta) => {
+          // Customize the file picker callback for image selection
+          const input = document.createElement("input");
+          input.setAttribute("type", "file");
+          input.setAttribute("accept", "image/*");
+          input.onchange = function () {
+            const file = input.files?.[0]; // Use optional chaining to handle possible null value
+            if (file) {
+              const reader = new FileReader();
+
+              reader.onload = function () {
+                const imageUrl = reader.result as string;
+                callback(imageUrl, { alt: file.name });
+              };
+
+              reader.readAsDataURL(file);
+            }
+          };
+
+          input.click();
+        },
+
         skin: false,
         content_css: false,
         content_style: [
@@ -80,7 +105,7 @@ export default function BundledEditor(props: any) {
           init?.content_style || "",
         ].join("\n"),
       }}
-      onEditorChange={handleEditorChange}
+      // onEditorChange={handleEditorChange}
       {...rest}
     />
   );

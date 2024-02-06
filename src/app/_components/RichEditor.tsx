@@ -13,9 +13,6 @@ const RichEditor = () => {
   return (
     <>
       <BundledEditor />
-      <div>
-        <h2>HTML Content:</h2>
-      </div>
     </>
   );
 };

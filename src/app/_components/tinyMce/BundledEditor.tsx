@@ -66,9 +66,9 @@ export default function BundledEditor(props: any) {
         ...init,
         forced_root_block: "", // Ensure no additional root block is added
         plugins:
-          "ai tinycomments mentions anchor autolink charmap code codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss directionality preview autoresize accordion fullscreen",
+          "print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons",
         toolbar:
-          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight ltr rtl | tinycomments | checklist numlist bullist accordion indent outdent | emoticons charmap | removeformat | code preview fullscreen",
+          "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
         autoresize_overflow_padding: 50,
         min_height: 600,
         image_advtab: true, // Enable the advanced image tab

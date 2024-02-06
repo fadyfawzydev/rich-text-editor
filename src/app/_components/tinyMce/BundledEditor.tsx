@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 
 import { Editor } from "@tinymce/tinymce-react";
@@ -41,32 +43,15 @@ if (typeof window !== "undefined") {
 
 // Editor styles
 import "tinymce/skins/ui/oxide/skin.min.css";
+import dynamic from "next/dynamic";
 
-// Content styles, including inline UI like fake cursors
-/* eslint import/no-webpack-loader-syntax: off */
-// import contentCss from 'tinymce/skins/content/dark/content.css'
-
-// import contentCss from "!!raw-loader!tinymce/skins/content/default/content.min.css";
-// import contentUiCss from "!!raw-loader!tinymce/skins/ui/oxide/content.min.css";
-
-export default function BundledEditor(props: any) {
-  const { init, onContentChange, ...rest } = props;
-
-  // const handleEditorChange = (content: string) => {
-  //   if (onContentChange) {
-  //     onContentChange(content);
-  //   }
-  // };
-
-  // note that skin and content_css is disabled to avoid the normal
-  // loading process and is instead loaded as a string via content_style
+export function BundledEditor() {
   return (
     <Editor
       init={{
-        ...init,
         forced_root_block: "", // Ensure no additional root block is added
         plugins:
-          "print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable help charmap quickbars emoticons",
+          "print preview paste importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists wordcount imagetools textpattern noneditable charmap  emoticons",
         toolbar:
           "undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist | forecolor backcolor removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media template link anchor codesample | ltr rtl",
         autoresize_overflow_padding: 50,
@@ -98,15 +83,12 @@ export default function BundledEditor(props: any) {
         },
 
         skin: false,
-        content_css: false,
-        content_style: [
-          // contentCss,
-          // contentUiCss,
-          init?.content_style || "",
-        ].join("\n"),
       }}
       // onEditorChange={handleEditorChange}
-      {...rest}
     />
   );
 }
+
+export default dynamic(() => Promise.resolve(BundledEditor), {
+  ssr: false,
+});

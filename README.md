@@ -1,36 +1,71 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TinyMCE Integration in Next.js 13 with TypeScript
 
-## Getting Started
+This document provides a guide for integrating the TinyMCE rich text editor in a Next.js 13 project using TypeScript. We'll cover the installation process, creating a custom editor component, and ensuring proper client-side rendering.
 
-First, run the development server:
+## Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Start by installing the necessary packages for TinyMCE:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+yarn add @tinymce/tinymce-react @types/tinymce tinymce
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Current versions of libraries
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+    "@tinymce/tinymce-react": "^4.3.2"
+    "@types/tinymce": "^4.6.9"
+    "tinymce": "^6.8.2"
 
-## Learn More
+## Creating the Editor Component
 
-To learn more about Next.js, take a look at the following resources:
+The BundledEditor component is a React component that integrates the TinyMCE editor. Below is a step-by-step explanation of its setup and configuration:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+"use client";
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+import React from "react";
+import { Editor } from "@tinymce/tinymce-react";
+import dynamic from "next/dynamic";
 
-## Deploy on Vercel
+"use client" ensures that the component is rendered on the client-side.
+@tinymce/tinymce-react is used for integrating the TinyMCE editor in React.
+next/dynamic is used for dynamic imports, enabling client-side rendering.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 2. Conditional Imports for TinyMCE
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+if (typeof window !== "undefined") {
+// Tinymce core and plugins
+require("tinymce/tinymce");
+require("tinymce/themes/silver");
+// ... other tinymce plugins
+require("tinymce/plugins/wordcount");
+
+// Emoticons plugin
+require("tinymce/plugins/emoticons/js/emojis");
+}
+
+These imports are conditional (if (typeof window !== "undefined")) to prevent issues during server-side rendering, as TinyMCE is only meant to run in a browser environment as we've faced a problem that occurred during navigator isn't defined
+
+## 3. Import Editor Styles
+
+import "tinymce/skins/ui/oxide/skin.min.css";
+
+## 4. Define the BundledEditor Component
+
+The BundledEditor component is a functional component that returns the TinyMCE Editor component with specific configurations.
+
+    Key Configurations:
+    forced_root_block: "" to avoid additional root blocks.
+    plugins and toolbar to define the available features and controls.
+    autoresize_overflow_padding and min_height for layout adjustments.
+    image_advtab: true to enable the advanced image tab.
+    file_picker_callback to customize how files are picked, particularly for image insertion.
+
+## 5. Dynamic Import for Client-Side Rendering
+
+export default dynamic(() => Promise.resolve(BundledEditor), {
+ssr: false,
+});
+
+Using next/dynamic with { ssr: false } ensures that the BundledEditor component is only rendered on the client-side, avoiding issues with server-side rendering of TinyMCE.
+
+following these 
+
+https://www.tiny.cloud/docs/tinymce/latest/full-featured-open-source-demo/
